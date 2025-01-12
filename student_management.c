@@ -282,8 +282,86 @@ void calculateAverageGrade(Student *head) {
     printf("Average grade of students: %.2f\n", totalGrade / count);
 }
 
-//fonction principale 
+void sortStudentsByGrade(Student **head) {
+    if (*head == NULL || (*head)->next == NULL) {
+        return;
+    }
 
+    int swapped;
+    Student *ptr1;
+    Student *lptr = NULL;
+
+    do {
+        swapped = 0;
+        ptr1 = *head;
+
+        while (ptr1->next != lptr) {
+            if (ptr1->grade > ptr1->next->grade) {
+                // Swap logic
+                int tempRoll = ptr1->rollNumber;
+                char tempName[50];
+                float tempGrade = ptr1->grade;
+
+                strcpy(tempName, ptr1->name);
+
+                ptr1->rollNumber = ptr1->next->rollNumber;
+                strcpy(ptr1->name, ptr1->next->name);
+                ptr1->grade = ptr1->next->grade;
+
+                ptr1->next->rollNumber = tempRoll;
+                strcpy(ptr1->next->name, tempName);
+                ptr1->next->grade = tempGrade;
+
+                swapped = 1;
+            }
+            ptr1 = ptr1->next;
+        }
+        lptr = ptr1;
+    } while (swapped);
+    printf("Students sorted by grade successfully.\n");
+}
+
+// Function to sort students by roll number in ascending order
+void sortStudentsByRollNumber(Student **head) {
+    if (*head == NULL || (*head)->next == NULL) {
+        return;
+    }
+
+    int swapped;
+    Student *ptr1;
+    Student *lptr = NULL;
+
+    do {
+        swapped = 0;
+        ptr1 = *head;
+
+        while (ptr1->next != lptr) {
+            if (ptr1->rollNumber > ptr1->next->rollNumber) {
+                // Swap logic
+                int tempRoll = ptr1->rollNumber;
+                char tempName[50];
+                float tempGrade = ptr1->grade;
+
+                strcpy(tempName, ptr1->name);
+
+                ptr1->rollNumber = ptr1->next->rollNumber;
+                strcpy(ptr1->name, ptr1->next->name);
+                ptr1->grade = ptr1->next->grade;
+
+                ptr1->next->rollNumber = tempRoll;
+                strcpy(ptr1->next->name, tempName);
+                ptr1->next->grade = tempGrade;
+
+                swapped = 1;
+            }
+            ptr1 = ptr1->next;
+        }
+        lptr = ptr1;
+    } while (swapped);
+    printf("Students sorted by roll number successfully.\n");
+}
+
+// Updating the main menu to include the new sorting options
 int main() {
     system("cat banner.txt");
 
@@ -302,11 +380,13 @@ int main() {
         printf("3. Delete Student\n");
         printf("4. Save to File\n");
         printf("5. Sort Students by Name\n");
-        printf("6. Search Student by Roll Number\n");
-        printf("7. Search Student by Name\n");
-        printf("8. Count Total Students\n");
-        printf("9. Calculate Average Grade\n");
-        printf("10. Exit\n");
+        printf("6. Sort Students by Grade\n");
+        printf("7. Sort Students by Roll Number\n");
+        printf("8. Search Student by Roll Number\n");
+        printf("9. Search Student by Name\n");
+        printf("10. Count Total Students\n");
+        printf("11. Calculate Average Grade\n");
+        printf("12. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -336,30 +416,37 @@ int main() {
 
             case 5:
                 sortStudentsByName(&head);
-                printf("Students sorted by name successfully.\n");
                 break;
 
             case 6:
+                sortStudentsByGrade(&head);
+                break;
+
+            case 7:
+                sortStudentsByRollNumber(&head);
+                break;
+
+            case 8:
                 printf("Enter Roll Number to search: ");
                 scanf("%d", &rollNumber);
                 searchStudentByRollNumber(head, rollNumber);
                 break;
 
-            case 7:
+            case 9:
                 printf("Enter Name to search: ");
                 scanf("%s", name);
                 searchStudentByName(head, name);
                 break;
 
-            case 8:
+            case 10:
                 countStudents(head);
                 break;
 
-            case 9:
+            case 11:
                 calculateAverageGrade(head);
                 break;
 
-            case 10:
+            case 12:
                 saveToFile(head, filename);
                 printf("Exiting the program. Goodbye!\n");
                 while (head != NULL) {
@@ -370,7 +457,7 @@ int main() {
                 exit(0);
 
             default:
-                printf("Invalid choice. Please enter a number between 1 and 10.\n");
+                printf("Invalid choice. Please enter a number between 1 and 12.\n");
         }
     }
 
